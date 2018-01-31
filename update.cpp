@@ -9,7 +9,7 @@ using namespace std;
 
 struct TreeNode
 {
-	tree_node *parent;
+	TreeNode *parent;
 	int pos;
 	string spell;
 };
@@ -21,7 +21,7 @@ struct solution
 string s;
 vector<string> substring;
 vector<int> weight;
-tree_node *best_leaf;
+TreeNode *best_leaf;
 vector<solution> select_sequence;
 int max_sum =0;
 void read_in_data(char argv[])
@@ -53,9 +53,9 @@ void read_in_data(char argv[])
 		substr.clear();		
 	}
 }
-void dfs(tree_node *parent,string temp_string,int sum,int pos,string spell)
+void dfs(TreeNode *parent,string temp_string,int sum,int pos,string spell)
 {
-	tree_node *node=new tree_node;
+	TreeNode *node=new TreeNode;
 	node->parent = parent;
 	node->pos = pos;
 	node->spell = spell;
@@ -89,7 +89,7 @@ void dfs(tree_node *parent,string temp_string,int sum,int pos,string spell)
 	}
 		
 }
-void traceback(tree_node *root)
+void traceback(TreeNode *root)
 {
 	TreeNode *node = best_leaf;
 	while(node!=root)
@@ -102,7 +102,7 @@ void traceback(tree_node *root)
 	}
 	
 }
-void dfs_start(tree_node *root)
+void dfs_start(TreeNode *root)
 {
 	map<string,bool> visted;
 	for(int index=0;index<s.size();index++)
