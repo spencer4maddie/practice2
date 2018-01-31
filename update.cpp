@@ -7,7 +7,7 @@
 #include<map>
 using namespace std;
 
-struct tree_node
+struct TreeNode
 {
 	tree_node *parent;
 	int pos;
@@ -91,7 +91,7 @@ void dfs(tree_node *parent,string temp_string,int sum,int pos,string spell)
 }
 void traceback(tree_node *root)
 {
-	tree_node *node = best_leaf;
+	TreeNode *node = best_leaf;
 	while(node!=root)
 	{
 		solution temp;
@@ -128,7 +128,7 @@ void dfs_start(tree_node *root)
 }
 void print_out_result(char a[])
 {
-	tree_node root;
+	TreeNode root;
 	dfs_start(&root);
 	traceback(&root);
 	ofstream fout(a);
