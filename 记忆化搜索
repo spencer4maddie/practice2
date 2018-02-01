@@ -9,6 +9,13 @@ using namespace std;
 vector<string> substring;
 vector<int> weight;
 string s;
+struct StringInfo
+{
+	int max;
+	int pos;
+	string spell;
+	string left_string;
+} ;
 void read_in_data(char argv[])
 {
 	ifstream in(argv);
@@ -38,10 +45,13 @@ void read_in_data(char argv[])
 		substr.clear();		
 	}
 }
-map<string,int> visited;
+map<string,StringInfo> visited;
 int search_best(string current_string)
 {
 	int max = 0;
+	int pos = 0;
+	string spell = "";
+	string left_string = "";
 	for(int index=0;index<s.size();index++)
 	{
 		for(int i=0;i<substring.size();i++)
@@ -53,15 +63,18 @@ int search_best(string current_string)
 				{
 					string try_cut_s = s.substr(0,start_pos)+ current_string.substr(start_pos+substring[i].size()); 
 					int temp_sum;
-					if(visited[try_cut_s]!=0)
+					if(visited.find(try_cut_s)!=visited.end())
 					{
-						temp_sum = weight[i] + visited[try_cut_s]; 
+						temp_sum = weight[i] + visited[try_cut_s].max; 
 					}
 					else
 						temp_sum = weight[i] + search_best(try_cut_s);
 					
 					if (temp_sum>max)
 					{
+						pos = index;
+						spell = substring[i];
+						left_string = try_cut_s; 
 						max = temp_sum;
 					}
 						
@@ -69,17 +82,23 @@ int search_best(string current_string)
 			}		
 		}
 	}
-	visited.insert(make_pair(current_string,max));
+	StringInfo string_info;
+	string_info.max =max; string_info.left_string = left_string; 
+	string_info.pos = pos;string_info.spell =spell;
+	visited.insert(make_pair(current_string,string_info));
 	return max;
 }
 void print_out_result(char a[])
 {
 	int result = search_best(s);
 	ofstream fout(a);
+	string current_substring = s;
+	while(current_substring != visited[current_substring].left_string)
+	{
+		fout<<visited[current_substring].pos <<" "<<visited[current_substring].spell<<endl;	
+		current_substring = visited[current_substring].left_string;
+	}
 	fout<<result<<endl;
-//	for(int i=select_sequence.size()-1;i>=0;i--)
-//		fout<<select_sequence[i].position<<" "<<select_sequence[i].spell<<endl;	
-//	fout<<max_sum<<endl; 
 }
 int main(int argc,char *argv[])
 {
